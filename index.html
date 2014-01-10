@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="revalidator-model : simple models using revalidator" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>revalidator-model</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/pluma/revalidator-model">View on GitHub</a>
+
+          <h1 id="project_title">revalidator-model</h1>
+          <h2 id="project_tagline">simple models using revalidator</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/pluma/revalidator-model/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/pluma/revalidator-model/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="synopsis" class="anchor" href="#synopsis"><span class="octicon octicon-link"></span></a>Synopsis</h1>
+
+<p><strong>revalidator-model</strong> is a simple model library based on <a href="https://github.com/flatiron/revalidator">revalidator</a>.</p>
+
+<p><a href="https://travis-ci.org/pluma/revalidator-model"><img src="https://travis-ci.org/pluma/revalidator-model.png?branch=master" alt="Build Status"></a> <a href="http://badge.fury.io/js/revalidator-model"><img src="https://badge.fury.io/js/revalidator-model.png" alt="NPM version"></a> <a href="https://david-dm.org/pluma/revalidator-model"><img src="https://david-dm.org/pluma/revalidator-model.png" alt="Dependencies"></a></p>
+
+<h1>
+<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h1>
+
+<h2>
+<a name="with-npm" class="anchor" href="#with-npm"><span class="octicon octicon-link"></span></a>With NPM</h2>
+
+<div class="highlight highlight-sh"><pre>npm install revalidator-model
+</pre></div>
+
+<h2>
+<a name="from-source" class="anchor" href="#from-source"><span class="octicon octicon-link"></span></a>From source</h2>
+
+<div class="highlight highlight-sh"><pre>git clone https://github.com/pluma/revalidator-model.git
+<span class="nb">cd </span>revalidator-model
+npm install
+make <span class="nb">test</span>
+</pre></div>
+
+<h1>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h1>
+
+<h2>
+<a name="modelschemaobjectmodel" class="anchor" href="#modelschemaobjectmodel"><span class="octicon octicon-link"></span></a>model(schema:Object):Model</h2>
+
+<p>Creates a <code>Model</code> with the given revalidator <code>schema</code>.</p>
+
+<p>In addition to the properties recognized by <code>revalidator</code> (<code>properties</code>, <code>patternProperties</code>, <code>additionalProperties</code>), the <code>schema</code> can have the following properties:</p>
+
+<h3>
+<a name="schemaprotoobject-optional" class="anchor" href="#schemaprotoobject-optional"><span class="octicon octicon-link"></span></a>schema.proto:Object (optional)</h3>
+
+<p>The <code>prototype</code> instances of the <code>Model</code> should inherit from. Use this to specify methods you want to have access to on your model's instances.</p>
+
+<h3>
+<a name="schemahydratefunction-optional" class="anchor" href="#schemahydratefunction-optional"><span class="octicon octicon-link"></span></a>schema.hydrate:Function (optional)</h3>
+
+<p>A <a href="https://github.com/pluma/transform-object">transformation</a> that will be applied to objects processed by your model's <code>hydrate</code> method.</p>
+
+<h3>
+<a name="schemadehydratefunction-optional" class="anchor" href="#schemadehydratefunction-optional"><span class="octicon octicon-link"></span></a>schema.dehydrate:Function (optional)</h3>
+
+<p>A <a href="https://github.com/pluma/transform-object">transformation</a> that will be applied to model instances' <code>data</code> when processed by their <code>dehydrate</code> method.</p>
+
+<h2>
+<a name="new-modeldataobjectinstance" class="anchor" href="#new-modeldataobjectinstance"><span class="octicon octicon-link"></span></a>new Model(data:Object):Instance</h2>
+
+<p>Creates a new instance with the given <code>data</code>. Use of the <code>new</code> keyword is optional.</p>
+
+<p>Any properties of the given <code>data</code> object that are not recognized will be ignored.</p>
+
+<h2>
+<a name="modelhydratedataobjectinstance" class="anchor" href="#modelhydratedataobjectinstance"><span class="octicon octicon-link"></span></a>Model.hydrate(data:Object):Instance</h2>
+
+<p>See <code>schema.hydrate</code>. Hydrates the object from the given <code>data</code> and returns a new <code>Model</code> instance.</p>
+
+<h2>
+<a name="modeldehydrateobject" class="anchor" href="#modeldehydrateobject"><span class="octicon octicon-link"></span></a>Model#dehydrate():Object</h2>
+
+<p>See <code>schema.dehydrate</code>. Dehydrates the instance's <code>data</code> and returns it.</p>
+
+<h2>
+<a name="modelvalidateobject" class="anchor" href="#modelvalidateobject"><span class="octicon octicon-link"></span></a>Model#validate():Object</h2>
+
+<p>Validates the instance's data using <code>revalidator</code>. The result object has two attributes:</p>
+
+<h3>
+<a name="validboolean" class="anchor" href="#validboolean"><span class="octicon octicon-link"></span></a>valid:Boolean</h3>
+
+<p>Whether the instance's data passed validation.</p>
+
+<h3>
+<a name="errorsarray" class="anchor" href="#errorsarray"><span class="octicon octicon-link"></span></a>errors:Array</h3>
+
+<p>An array of error messages if the validation failed.</p>
+
+<h2>
+<a name="modelschemaobject" class="anchor" href="#modelschemaobject"><span class="octicon octicon-link"></span></a>Model#schema:Object</h2>
+
+<p>The <code>schema</code> that was passed used to create the <code>Model</code> of this instance.</p>
+
+<h2>
+<a name="modeldataobject" class="anchor" href="#modeldataobject"><span class="octicon octicon-link"></span></a>Model#data:Object</h2>
+
+<p>The instance's <code>data</code>.</p>
+
+<h1>
+<a name="unlicense" class="anchor" href="#unlicense"><span class="octicon octicon-link"></span></a>Unlicense</h1>
+
+<p>This is free and unencumbered public domain software. For more information, see <a href="http://unlicense.org/">http://unlicense.org/</a> or the accompanying <a href="https://github.com/pluma/revalidator-model/blob/master/UNLICENSE">UNLICENSE</a> file.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">revalidator-model maintained by <a href="https://github.com/pluma">pluma</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
