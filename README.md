@@ -45,6 +45,8 @@ A [transformation](https://github.com/pluma/transform-object) that will be appli
 
 Creates a new instance with the given `data`. Use of the `new` keyword is optional.
 
+Any properties of the given `data` object that are not recognized will be ignored.
+
 ## Model.hydrate(data:Object):Instance
 
 See `schema.hydrate`. Hydrates the object from the given `data` and returns a new `Model` instance.
