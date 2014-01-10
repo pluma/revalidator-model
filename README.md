@@ -21,6 +21,40 @@ npm install
 make test
 ```
 
+# Usage Example
+
+```javascript
+var model = require('revalidator-model');
+var List = model({
+    properties: {
+        items: {type: 'array'}
+    },
+    proto: {
+        size: function() {
+            return this.data.items.length;
+        }
+    },
+    hydrate: {
+        items: function(val) {
+            return val.split(', ');
+        }
+    },
+    dehydrate: {
+        items: function(val) {
+            return val.join(', ');
+        }
+    }
+});
+var list = List.hydrate({items: 'foo, bar, qux', foo: 'bar'});
+console.log(list.data.items); // ['foo', 'bar', 'qux']
+console.log(list.size()); // 3
+console.log(list.dehydrate()); // {items: 'foo, bar, qux'}
+console.log(list.validate()); // {valid: true, errors: []}
+var list2 = new List({items: 5});
+console.log(list.data.items); // 5
+console.log(list2.validate().valid); // false
+```
+
 # API
 
 ## model(schema:Object):Model
