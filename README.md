@@ -34,6 +34,9 @@ var List = model({
             return this.data.items.length;
         }
     },
+    defaults: {
+        flavor: 'pungent'
+    },
     hydrate: {
         items: function(val) {
             return val.split(', ');
@@ -48,9 +51,11 @@ var List = model({
 var list = List.hydrate({items: 'foo, bar, qux', foo: 'bar'});
 console.log(list.data.items); // ['foo', 'bar', 'qux']
 console.log(list.size()); // 3
+console.log(list.data.flavor); // 'pungent'
 console.log(list.dehydrate()); // {items: 'foo, bar, qux'}
 console.log(list.validate()); // {valid: true, errors: []}
-var list2 = new List({items: 5});
+var list2 = new List({items: 5, flavor: 'spicy'});
+console.log(list.data.flavor); // 'spicy';
 console.log(list.data.items); // 5
 console.log(list2.validate().valid); // false
 ```
@@ -66,6 +71,10 @@ In addition to the properties recognized by `revalidator` (`properties`, `patter
 ### schema.proto:Object (optional)
 
 The `prototype` instances of the `Model` should inherit from. Use this to specify methods you want to have access to on your model's instances.
+
+### schema.defaults:Object (optional)
+
+Default property values to be copied to the `data` attribute of new instances of this `Model`.
 
 ### schema.hydrate:Function (optional)
 

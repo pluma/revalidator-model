@@ -1,7 +1,8 @@
-/*! revalidator-model 0.1.1 Original author Alan Plum <me@pluma.io>. Released into the Public Domain under the UNLICENSE. @preserve */
+/*! revalidator-model 0.2.0 Original author Alan Plum <me@pluma.io>. Released into the Public Domain under the UNLICENSE. @preserve */
 var revalidator = require('revalidator'),
   filterObj = require('object-filter'),
-  transform = require('transform-object');
+  transform = require('transform-object'),
+  aug = require('aug');
 
 module.exports = model;
 
@@ -13,7 +14,7 @@ function model(schema) {
     if (!Model.prototype.isPrototypeOf(self)) {
       return new Model(data);
     }
-    self.data = filterObj(data || {}, function(v, k) {
+    self.data = aug({}, schema.defaults, filterObj(data || {}, function(v, k) {
       if (self.schema.properties && k in self.schema.properties) {
         return true;
       }
@@ -23,7 +24,7 @@ function model(schema) {
           return (new RegExp(str)).test(k);
         })
       );
-    });
+    }));
     return self;
   }
 
