@@ -1,4 +1,4 @@
-/*! revalidator-model 0.2.0 Original author Alan Plum <me@pluma.io>. Released into the Public Domain under the UNLICENSE. @preserve */
+/*! revalidator-model 0.2.1 Original author Alan Plum <me@pluma.io>. Released into the Public Domain under the UNLICENSE. @preserve */
 var revalidator = require('revalidator'),
   filterObj = require('object-filter'),
   transform = require('transform-object'),

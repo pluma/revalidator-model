@@ -2,7 +2,7 @@
 
 **revalidator-model** is a simple model library based on [revalidator](https://github.com/flatiron/revalidator).
 
-[![Build Status](https://travis-ci.org/pluma/revalidator-model.png?branch=master)](https://travis-ci.org/pluma/revalidator-model) [![NPM version](https://badge.fury.io/js/revalidator-model.png)](http://badge.fury.io/js/revalidator-model) [![Dependencies](https://david-dm.org/pluma/revalidator-model.png)](https://david-dm.org/pluma/revalidator-model)
+[![Build Status](https://travis-ci.org/pluma/revalidator-model.png?branch=master)](https://travis-ci.org/pluma/revalidator-model) [![Coverage Status](https://coveralls.io/repos/pluma/revalidator-model/badge.png?branch=master)](https://coveralls.io/r/pluma/revalidator-model?branch=master) [![NPM version](https://badge.fury.io/js/revalidator-model.png)](http://badge.fury.io/js/revalidator-model) [![Dependencies](https://david-dm.org/pluma/revalidator-model.png)](https://david-dm.org/pluma/revalidator-model)
 
 # Install
 
