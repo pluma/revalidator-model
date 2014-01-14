@@ -53,7 +53,10 @@ describe('Model.hydrate(data)', function() {
 });
 
 describe('new Model(data)', function() {
-  var Model = model({properties: {foo: true, bar: true}});
+  var Model = model({
+    properties: {foo: true, bar: true},
+    patternProperties: {'^f0[01]$': true}
+  });
   it('returns a Model instance', function() {
     var obj = Model({});
     expect(obj).to.be.a(Model);
@@ -66,6 +69,15 @@ describe('new Model(data)', function() {
     expect(obj.data.foo).to.equal('a');
     expect(obj.data).to.have.property('bar');
     expect(obj.data.bar).to.equal('b');
+  });
+  it('copies pattern matching attributes', function() {
+    var obj = Model({f00: 'a', f01: 'b', f000: 'c'});
+    expect(obj).to.have.property('data');
+    expect(obj.data).to.have.property('f00');
+    expect(obj.data.f00).to.equal('a');
+    expect(obj.data).to.have.property('f01');
+    expect(obj.data.f01).to.equal('b');
+    expect(obj.data).to.not.have.property('f000');
   });
   it('does not simply copy the data object', function() {
     var data = {};
