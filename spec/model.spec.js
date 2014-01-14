@@ -7,7 +7,7 @@ describe('model(schema)', function() {
     expect(model).to.be.a('function');
   });
   it('returns a Model constructor', function() {
-    var Ctor = model({});
+    var Ctor = model();
     expect(Ctor).to.be.a('function');
     expect(Ctor).to.have.property('prototype');
     expect(Ctor.prototype).to.be.an('object');
@@ -27,13 +27,13 @@ describe('model(schema)', function() {
 
 describe('Model.hydrate(data)', function() {
   it('is a method', function() {
-    var Model = model({});
+    var Model = model();
     expect(Model).to.have.property('hydrate');
     expect(Model.hydrate).to.be.a('function');
   });
   it('returns a Model instance', function() {
-    var Model = model({});
-    var obj = Model.hydrate({});
+    var Model = model();
+    var obj = Model.hydrate();
     expect(obj).to.be.a(Model);
     expect(Object.getPrototypeOf(obj)).to.equal(Model.prototype);
   });
