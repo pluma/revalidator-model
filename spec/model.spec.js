@@ -132,3 +132,25 @@ describe('instance.validate()', function() {
     expect(result.errors).to.be.an('array');
   });
 });
+
+describe('model({defaults})', function() {
+  it('copies defaults to new instances of the Model', function() {
+    var Model = model({defaults: {foo: 'bar'}});
+    var instance = new Model();
+    expect(instance.data).to.have.property('foo', 'bar');
+  });
+  it('clones array default values', function() {
+    var Model = model({defaults: {foo: ['bar', 'qux']}});
+    var instance = new Model();
+    expect(instance.data).to.have.property('foo');
+    expect(instance.data.foo).to.eql(Model.schema.defaults.foo);
+    expect(instance.data.foo).not.to.equal(Model.schema.defaults.foo);
+  });
+  it('clones object default values', function() {
+    var Model = model({defaults: {foo: {bar: 'qux'}}});
+    var instance = new Model();
+    expect(instance.data).to.have.property('foo');
+    expect(instance.data.foo).to.eql(Model.schema.defaults.foo);
+    expect(instance.data.foo).not.to.equal(Model.schema.defaults.foo);
+  });
+});

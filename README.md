@@ -74,7 +74,8 @@ The `prototype` instances of the `Model` should inherit from. Use this to specif
 
 ### schema.defaults:Object (optional)
 
-Default property values to be copied to the `data` attribute of new instances of this `Model`.
+Default property values to be copied to the `data` attribute of new instances of this
+`Model`. Arrays and objects will be deep-cloned.
 
 ### schema.hydrate:Function (optional)
 
@@ -94,6 +95,10 @@ Any properties of the given `data` object that are not recognized will be ignore
 
 See `schema.hydrate`. Hydrates the object from the given `data` and returns a new `Model` instance.
 
+## Model.schema:Object
+
+The `schema` that was used to create this `Model`.
+
 ## Model#dehydrate():Object
 
 See `schema.dehydrate`. Dehydrates the instance's `data` and returns it.
@@ -112,7 +117,7 @@ An array of error messages if the validation failed.
 
 ## Model#schema:Object
 
-The `schema` that was passed used to create the `Model` of this instance.
+The `schema` that was used to create the `Model` of this instance.
 
 ## Model#data:Object
 
