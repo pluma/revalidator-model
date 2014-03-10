@@ -36,7 +36,11 @@
 
 <p><strong>revalidator-model</strong> is a simple model library based on <a href="https://github.com/flatiron/revalidator">revalidator</a>.</p>
 
-<p><a href="https://travis-ci.org/pluma/revalidator-model"><img src="https://travis-ci.org/pluma/revalidator-model.png?branch=master" alt="Build Status"></a> <a href="http://badge.fury.io/js/revalidator-model"><img src="https://badge.fury.io/js/revalidator-model.png" alt="NPM version"></a> <a href="https://david-dm.org/pluma/revalidator-model"><img src="https://david-dm.org/pluma/revalidator-model.png" alt="Dependencies"></a></p>
+<p><a href="http://nodejs.org/api/documentation.html#documentation_stability_index"><img src="http://b.repl.ca/v1/stability-2_--_unstable-yellow.png" alt="stability 2 - unstable"></a> <a href="http://unlicense.org/"><img src="http://b.repl.ca/v1/license-Unlicense-lightgrey.png" alt="license - Unlicense"></a> <a href="https://flattr.com/submit/auto?user_id=pluma&amp;url=https://github.com/pluma/revalidator-model"><img src="https://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this"></a></p>
+
+<p><a href="https://travis-ci.org/pluma/revalidator-model"><img src="https://travis-ci.org/pluma/revalidator-model.png?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/r/pluma/revalidator-model?branch=master"><img src="https://coveralls.io/repos/pluma/revalidator-model/badge.png?branch=master" alt="Coverage Status"></a> <a href="https://david-dm.org/pluma/revalidator-model"><img src="https://david-dm.org/pluma/revalidator-model.png?theme=shields.io" alt="Dependencies"></a></p>
+
+<p><a href="https://npmjs.org/package/revalidator-model"><img src="https://nodei.co/npm/revalidator-model.png?compact=true" alt="NPM status"></a></p>
 
 <h1>
 <a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h1>
@@ -57,6 +61,45 @@ make <span class="nb">test</span>
 </pre></div>
 
 <h1>
+<a name="usage-example" class="anchor" href="#usage-example"><span class="octicon octicon-link"></span></a>Usage Example</h1>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">model</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'revalidator-model'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">List</span> <span class="o">=</span> <span class="nx">model</span><span class="p">({</span>
+    <span class="nx">properties</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">items</span><span class="o">:</span> <span class="p">{</span><span class="nx">type</span><span class="o">:</span> <span class="s1">'array'</span><span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">size</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">defaults</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">flavor</span><span class="o">:</span> <span class="s1">'pungent'</span>
+    <span class="p">},</span>
+    <span class="nx">hydrate</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">items</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">val</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">', '</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">dehydrate</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">items</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">val</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">', '</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+<span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">List</span><span class="p">.</span><span class="nx">hydrate</span><span class="p">({</span><span class="nx">items</span><span class="o">:</span> <span class="s1">'foo, bar, qux'</span><span class="p">,</span> <span class="nx">foo</span><span class="o">:</span> <span class="s1">'bar'</span><span class="p">});</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">items</span><span class="p">);</span> <span class="c1">// ['foo', 'bar', 'qux']</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">size</span><span class="p">());</span> <span class="c1">// 3</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">flavor</span><span class="p">);</span> <span class="c1">// 'pungent'</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">dehydrate</span><span class="p">());</span> <span class="c1">// {items: 'foo, bar, qux'}</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">validate</span><span class="p">());</span> <span class="c1">// {valid: true, errors: []}</span>
+<span class="kd">var</span> <span class="nx">list2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">List</span><span class="p">({</span><span class="nx">items</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nx">flavor</span><span class="o">:</span> <span class="s1">'spicy'</span><span class="p">});</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">flavor</span><span class="p">);</span> <span class="c1">// 'spicy';</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">items</span><span class="p">);</span> <span class="c1">// 5</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list2</span><span class="p">.</span><span class="nx">validate</span><span class="p">().</span><span class="nx">valid</span><span class="p">);</span> <span class="c1">// false</span>
+</pre></div>
+
+<h1>
 <a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h1>
 
 <h2>
@@ -70,6 +113,12 @@ make <span class="nb">test</span>
 <a name="schemaprotoobject-optional" class="anchor" href="#schemaprotoobject-optional"><span class="octicon octicon-link"></span></a>schema.proto:Object (optional)</h3>
 
 <p>The <code>prototype</code> instances of the <code>Model</code> should inherit from. Use this to specify methods you want to have access to on your model's instances.</p>
+
+<h3>
+<a name="schemadefaultsobject-optional" class="anchor" href="#schemadefaultsobject-optional"><span class="octicon octicon-link"></span></a>schema.defaults:Object (optional)</h3>
+
+<p>Default property values to be copied to the <code>data</code> attribute of new instances of this
+<code>Model</code>. Arrays and objects will be deep-cloned.</p>
 
 <h3>
 <a name="schemahydratefunction-optional" class="anchor" href="#schemahydratefunction-optional"><span class="octicon octicon-link"></span></a>schema.hydrate:Function (optional)</h3>
@@ -94,6 +143,11 @@ make <span class="nb">test</span>
 <p>See <code>schema.hydrate</code>. Hydrates the object from the given <code>data</code> and returns a new <code>Model</code> instance.</p>
 
 <h2>
+<a name="modelschemaobject" class="anchor" href="#modelschemaobject"><span class="octicon octicon-link"></span></a>Model.schema:Object</h2>
+
+<p>The <code>schema</code> that was used to create this <code>Model</code>.</p>
+
+<h2>
 <a name="modeldehydrateobject" class="anchor" href="#modeldehydrateobject"><span class="octicon octicon-link"></span></a>Model#dehydrate():Object</h2>
 
 <p>See <code>schema.dehydrate</code>. Dehydrates the instance's <code>data</code> and returns it.</p>
@@ -114,9 +168,9 @@ make <span class="nb">test</span>
 <p>An array of error messages if the validation failed.</p>
 
 <h2>
-<a name="modelschemaobject" class="anchor" href="#modelschemaobject"><span class="octicon octicon-link"></span></a>Model#schema:Object</h2>
+<a name="modelschemaobject-1" class="anchor" href="#modelschemaobject-1"><span class="octicon octicon-link"></span></a>Model#schema:Object</h2>
 
-<p>The <code>schema</code> that was passed used to create the <code>Model</code> of this instance.</p>
+<p>The <code>schema</code> that was used to create the <code>Model</code> of this instance.</p>
 
 <h2>
 <a name="modeldataobject" class="anchor" href="#modeldataobject"><span class="octicon octicon-link"></span></a>Model#data:Object</h2>
