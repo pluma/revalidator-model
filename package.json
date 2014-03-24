@@ -21,7 +21,7 @@
   "dependencies": {
     "revalidator": "~0.1",
     "object-filter": "~1.0",
-    "transform-object": "~0.1",
+    "transform-object": "~0.2",
     "aug": "~0.1",
     "clone": "~0.1"
   },
