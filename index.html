@@ -70,7 +70,7 @@ make <span class="nb">test</span>
     <span class="p">},</span>
     <span class="nx">proto</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">size</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="nx">defaults</span><span class="o">:</span> <span class="p">{</span>
@@ -88,15 +88,16 @@ make <span class="nb">test</span>
     <span class="p">}</span>
 <span class="p">});</span>
 <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">List</span><span class="p">.</span><span class="nx">hydrate</span><span class="p">({</span><span class="nx">items</span><span class="o">:</span> <span class="s1">'foo, bar, qux'</span><span class="p">,</span> <span class="nx">foo</span><span class="o">:</span> <span class="s1">'bar'</span><span class="p">});</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">items</span><span class="p">);</span> <span class="c1">// ['foo', 'bar', 'qux']</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">items</span><span class="p">);</span> <span class="c1">// ['foo', 'bar', 'qux']</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">size</span><span class="p">());</span> <span class="c1">// 3</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">flavor</span><span class="p">);</span> <span class="c1">// 'pungent'</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">flavor</span><span class="p">);</span> <span class="c1">// 'pungent'</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">dehydrate</span><span class="p">());</span> <span class="c1">// {items: 'foo, bar, qux'}</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">validate</span><span class="p">());</span> <span class="c1">// {valid: true, errors: []}</span>
 <span class="kd">var</span> <span class="nx">list2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">List</span><span class="p">({</span><span class="nx">items</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nx">flavor</span><span class="o">:</span> <span class="s1">'spicy'</span><span class="p">});</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">flavor</span><span class="p">);</span> <span class="c1">// 'spicy';</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">items</span><span class="p">);</span> <span class="c1">// 5</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list2</span><span class="p">.</span><span class="nx">flavor</span><span class="p">);</span> <span class="c1">// 'spicy';</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list2</span><span class="p">.</span><span class="nx">items</span><span class="p">);</span> <span class="c1">// 5</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list2</span><span class="p">.</span><span class="nx">validate</span><span class="p">().</span><span class="nx">valid</span><span class="p">);</span> <span class="c1">// false</span>
+<span class="nx">list2</span><span class="p">.</span><span class="nx">dehydrate</span><span class="p">();</span> <span class="c1">// fails with error: "Object 5 has no method split."</span>
 </pre></div>
 
 <h1>
@@ -117,7 +118,7 @@ make <span class="nb">test</span>
 <h3>
 <a name="schemadefaultsobject-optional" class="anchor" href="#schemadefaultsobject-optional"><span class="octicon octicon-link"></span></a>schema.defaults:Object (optional)</h3>
 
-<p>Default property values to be copied to the <code>data</code> attribute of new instances of this
+<p>Default property values to be copied to new instances of this
 <code>Model</code>. Arrays and objects will be deep-cloned.</p>
 
 <h3>
@@ -128,7 +129,7 @@ make <span class="nb">test</span>
 <h3>
 <a name="schemadehydratefunction-optional" class="anchor" href="#schemadehydratefunction-optional"><span class="octicon octicon-link"></span></a>schema.dehydrate:Function (optional)</h3>
 
-<p>A <a href="https://github.com/pluma/transform-object">transformation</a> that will be applied to model instances' <code>data</code> when processed by their <code>dehydrate</code> method.</p>
+<p>A <a href="https://github.com/pluma/transform-object">transformation</a> that will be applied to model instance when processed by its <code>dehydrate</code> method.</p>
 
 <h2>
 <a name="new-modeldataobjectinstance" class="anchor" href="#new-modeldataobjectinstance"><span class="octicon octicon-link"></span></a>new Model(data:Object):Instance</h2>
@@ -148,19 +149,14 @@ make <span class="nb">test</span>
 <p>The <code>schema</code> that was used to create this <code>Model</code>.</p>
 
 <h2>
-<a name="modeldehydrateobject" class="anchor" href="#modeldehydrateobject"><span class="octicon octicon-link"></span></a>Model#dehydrate():Object</h2>
+<a name="modelvalidatedataobjectobject" class="anchor" href="#modelvalidatedataobjectobject"><span class="octicon octicon-link"></span></a>Model.validate(data:Object):Object</h2>
 
-<p>See <code>schema.dehydrate</code>. Dehydrates the instance's <code>data</code> and returns it.</p>
-
-<h2>
-<a name="modelvalidateobject" class="anchor" href="#modelvalidateobject"><span class="octicon octicon-link"></span></a>Model#validate():Object</h2>
-
-<p>Validates the instance's data using <code>revalidator</code>. The result object has two attributes:</p>
+<p>Validates the given <code>data</code> against the <code>Model</code>'s schema using <code>revalidator</code>. The result object has two attributes:</p>
 
 <h3>
 <a name="validboolean" class="anchor" href="#validboolean"><span class="octicon octicon-link"></span></a>valid:Boolean</h3>
 
-<p>Whether the instance's data passed validation.</p>
+<p>Whether the data passed validation.</p>
 
 <h3>
 <a name="errorsarray" class="anchor" href="#errorsarray"><span class="octicon octicon-link"></span></a>errors:Array</h3>
@@ -168,14 +164,14 @@ make <span class="nb">test</span>
 <p>An array of error messages if the validation failed.</p>
 
 <h2>
-<a name="modelschemaobject-1" class="anchor" href="#modelschemaobject-1"><span class="octicon octicon-link"></span></a>Model#schema:Object</h2>
+<a name="modelvalidateobject" class="anchor" href="#modelvalidateobject"><span class="octicon octicon-link"></span></a>Model#validate():Object</h2>
 
-<p>The <code>schema</code> that was used to create the <code>Model</code> of this instance.</p>
+<p>Validates the instance. Shorthand for <code>Model.validate(instance)</code>.</p>
 
 <h2>
-<a name="modeldataobject" class="anchor" href="#modeldataobject"><span class="octicon octicon-link"></span></a>Model#data:Object</h2>
+<a name="modeldehydrateobject" class="anchor" href="#modeldehydrateobject"><span class="octicon octicon-link"></span></a>Model#dehydrate():Object</h2>
 
-<p>The instance's <code>data</code>.</p>
+<p>See <code>schema.dehydrate</code>. Dehydrates the instance's data and returns it.</p>
 
 <h1>
 <a name="unlicense" class="anchor" href="#unlicense"><span class="octicon octicon-link"></span></a>Unlicense</h1>
