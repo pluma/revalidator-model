@@ -15,8 +15,7 @@ describe('model(schema)', function() {
   it('exposes the schema', function() {
     var schema = {};
     var Model = model(schema);
-    expect(Model.prototype).to.have.property('schema');
-    expect(Model.prototype.schema).to.equal(schema);
+    expect(Model).to.have.property('schema', schema);
   });
   it('extends schema.proto', function() {
     var schema = {proto: {}};
@@ -40,15 +39,16 @@ describe('Model.hydrate(data)', function() {
   it('uses the schema\'s "hydrate" transformation', function() {
     var called = false, calledWith = null;
     var Model = model({
+      additionalProperties: true,
       hydrate: function(arg) {
         calledWith = arg;
         called = true;
       }
     });
-    var data = {};
+    var data = {foo: 'bar'};
     Model.hydrate(data);
     expect(called).to.equal(true);
-    expect(calledWith).to.equal(data);
+    expect(calledWith).to.eql(data);
   });
 });
 
@@ -64,32 +64,29 @@ describe('new Model(data)', function() {
   });
   it('copies matching attributes', function() {
     var obj = Model({foo: 'a', bar: 'b'});
-    expect(obj).to.have.property('data');
-    expect(obj.data).to.have.property('foo');
-    expect(obj.data.foo).to.equal('a');
-    expect(obj.data).to.have.property('bar');
-    expect(obj.data.bar).to.equal('b');
+    expect(obj).to.have.property('foo');
+    expect(obj.foo).to.equal('a');
+    expect(obj).to.have.property('bar');
+    expect(obj.bar).to.equal('b');
   });
   it('copies pattern matching attributes', function() {
     var obj = Model({f00: 'a', f01: 'b', f000: 'c'});
-    expect(obj).to.have.property('data');
-    expect(obj.data).to.have.property('f00');
-    expect(obj.data.f00).to.equal('a');
-    expect(obj.data).to.have.property('f01');
-    expect(obj.data.f01).to.equal('b');
-    expect(obj.data).to.not.have.property('f000');
+    expect(obj).to.have.property('f00');
+    expect(obj.f00).to.equal('a');
+    expect(obj).to.have.property('f01');
+    expect(obj.f01).to.equal('b');
+    expect(obj).to.not.have.property('f000');
   });
   it('does not simply copy the data object', function() {
     var data = {};
     var obj = Model(data);
-    expect(obj.data).to.not.equal(data);
+    expect(obj).to.not.equal(data);
   });
   it('ignores unknown attributes', function() {
     var obj = Model({bar: 'b', qux: 'c'});
-    expect(obj).to.have.property('data');
-    expect(obj.data).to.have.property('bar');
-    expect(obj.data.bar).to.equal('b');
-    expect(obj.data).to.not.have.property('qux');
+    expect(obj).to.have.property('bar');
+    expect(obj.bar).to.equal('b');
+    expect(obj).to.not.have.property('qux');
   });
 });
 describe('instance.dehydrate()', function() {
@@ -111,15 +108,16 @@ describe('instance.dehydrate()', function() {
   it('uses the schema\'s "dehydrate" transformation', function() {
     var called = false, calledWith = null;
     var Model = model({
+      additionalProperties: true,
       dehydrate: function(arg) {
         calledWith = arg;
         called = true;
       }
     });
-    var instance = Model({});
+    var instance = Model({foo: 'bar'});
     instance.dehydrate();
     expect(called).to.equal(true);
-    expect(calledWith).to.equal(instance.data);
+    expect(calledWith).to.eql(instance);
   });
 });
 describe('instance.validate()', function() {
@@ -137,20 +135,26 @@ describe('model({defaults})', function() {
   it('copies defaults to new instances of the Model', function() {
     var Model = model({defaults: {foo: 'bar'}});
     var instance = new Model();
-    expect(instance.data).to.have.property('foo', 'bar');
+    expect(instance).to.have.property('foo', 'bar');
   });
   it('clones array default values', function() {
     var Model = model({defaults: {foo: ['bar', 'qux']}});
     var instance = new Model();
-    expect(instance.data).to.have.property('foo');
-    expect(instance.data.foo).to.eql(Model.schema.defaults.foo);
-    expect(instance.data.foo).not.to.equal(Model.schema.defaults.foo);
+    expect(instance).to.have.property('foo');
+    expect(instance.foo).to.eql(Model.schema.defaults.foo);
+    expect(instance.foo).not.to.equal(Model.schema.defaults.foo);
   });
   it('clones object default values', function() {
     var Model = model({defaults: {foo: {bar: 'qux'}}});
     var instance = new Model();
-    expect(instance.data).to.have.property('foo');
-    expect(instance.data.foo).to.eql(Model.schema.defaults.foo);
-    expect(instance.data.foo).not.to.equal(Model.schema.defaults.foo);
+    expect(instance).to.have.property('foo');
+    expect(instance.foo).to.eql(Model.schema.defaults.foo);
+    expect(instance.foo).not.to.equal(Model.schema.defaults.foo);
+  });
+  it('invokes function default values', function() {
+    var Model = model({defaults: {foo: {qux: function() {return 'bar';}}}});
+    var instance = new Model();
+    expect(instance).to.have.property('foo');
+    expect(instance.foo).to.have.property('qux', 'bar');
   });
 });

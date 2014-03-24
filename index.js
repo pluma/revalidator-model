@@ -1,11 +1,24 @@
-/*! revalidator-model 0.3.0 Original author Alan Plum <me@pluma.io>. Released into the Public Domain under the UNLICENSE. @preserve */
+/*! revalidator-model 0.4.0 Original author Alan Plum <me@pluma.io>. Released into the Public Domain under the UNLICENSE. @preserve */
 var revalidator = require('revalidator'),
   filterObj = require('object-filter'),
   transform = require('transform-object'),
   clone = require('clone'),
   aug = require('aug');
 
-module.exports = model;
+module.exports = exports = model;
+exports.deepCall = deepCall;
+
+function deepCall(obj) {
+  if (typeof obj === 'function') {
+    return obj();
+  }
+  if (typeof obj === 'object') {
+    Object.keys(obj).forEach(function(key) {
+      obj[key] = deepCall(obj[key]);
+    });
+  }
+  return obj;
+}
 
 function model(schema) {
   schema = schema || {};
@@ -15,14 +28,13 @@ function model(schema) {
     if (!Model.prototype.isPrototypeOf(self)) {
       return new Model(data);
     }
-    self.data = clone(self.schema.defaults) || {};
-    aug(self.data, filterObj(data || {}, function(v, k) {
-      if (self.schema.properties && k in self.schema.properties) {
+    aug(self, deepCall(clone(Model.schema.defaults) || {}), filterObj(data || {}, function(v, k) {
+      if (Model.schema.properties && k in Model.schema.properties) {
         return true;
       }
       return (
-        self.schema.patternProperties &&
-        Object.keys(self.schema.patternProperties).some(function(str) {
+        Model.schema.patternProperties &&
+        Object.keys(Model.schema.patternProperties).some(function(str) {
           return (new RegExp(str)).test(k);
         })
       );
@@ -30,17 +42,21 @@ function model(schema) {
     return self;
   }
 
+  Model.schema = schema;
   Model.prototype = Object.create(schema.proto || Object.prototype);
   Model.prototype.constructor = Model;
-  Model.prototype.schema = Model.schema = schema;
   Model.prototype.validate = function() {
-    return revalidator.validate(this.data, this.schema);
+    return Model.validate(this);
   };
   Model.prototype.dehydrate = function() {
-    return transform(this.data, this.schema.dehydrate);
+    return transform(this, Model.schema.dehydrate);
+  };
+  Model.validate = function(data) {
+    return revalidator.validate(data, Model.schema);
   };
   Model.hydrate = function(data) {
-    return new Model(transform(data || {}, Model.schema.hydrate));
+    var initial = deepCall(clone(Model.schema.defaults) || {});
+    return new Model(transform(aug(initial, data), Model.schema.hydrate));
   };
 
   return Model;
