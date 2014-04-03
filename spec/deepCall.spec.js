@@ -20,9 +20,9 @@ describe('deepCall(obj)', function() {
     expect(obj).to.have.property('z', 2);
   });
   it('leaves other values alone', function() {
-    var obj = {x: {y: {z: 5}}};
+    var obj = {x: {y: {z: 5, a: null, b: undefined}}};
     deepCall(obj);
-    expect(obj).to.eql({x: {y: {z: 5}}});
+    expect(obj).to.eql({x: {y: {z: 5, a: null, b: undefined}}});
   });
   it('traverses nested properties', function() {
     var obj = {x: {y: {z: function() {return 13;}}}};
