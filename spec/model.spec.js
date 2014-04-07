@@ -105,10 +105,24 @@ describe('instance.dehydrate()', function() {
     expect(result).to.have.property('bar');
     expect(result.bar).to.equal('b');
   });
+  it('does not simply return the instance', function() {
+    var obj = model({})({});
+    expect(obj.dehydrate()).to.not.equal(obj);
+  });
+  it('does not modify the instance', function() {
+    var obj = model({
+      properties: {foo: {type: 'number'}},
+      hydrate: {foo: Number},
+      dehydrate: {foo: String}
+    })({foo: 1337});
+    var data = obj.dehydrate();
+    expect(data).to.have.property('foo', '1337');
+    expect(obj).to.have.property('foo', 1337);
+  });
   it('uses the schema\'s "dehydrate" transformation', function() {
     var called = false, calledWith = null;
     var Model = model({
-      additionalProperties: true,
+      properties: {foo: {type: 'string'}},
       dehydrate: function(arg) {
         calledWith = arg;
         called = true;
