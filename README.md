@@ -1,3 +1,5 @@
+**NOTE:** This package is no longer being maintained. If you are interested in taking over as maintainer or are interested in the npm package name, get in touch by creating an issue.
+
 # Synopsis
 
 **revalidator-model** is a simple model library based on [revalidator](https://github.com/flatiron/revalidator).
